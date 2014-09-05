@@ -30,7 +30,7 @@ public class MyActivity extends ActionBarActivity {
                         @Override
                         public void run() {
                             TextView text=(TextView)findViewById(R.id.text);
-                            text.setText("Rescan\n"+device.getName() + " rssi = " + rssi + "\n");
+                            text.setText("Start Scan\n"+device.getName() + " rssi = " + rssi + "\n");
                         }
                     });
                 }
