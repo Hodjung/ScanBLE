@@ -30,17 +30,13 @@ public class MyActivity extends ActionBarActivity {
                         @Override
                         public void run() {
                             TextView text=(TextView)findViewById(R.id.text);
-                            text.setText("Start Scan\n"+device.getName() + " rssi = " + rssi + "\n");
+                            text.setText("\n"+device.getName() + " rssi = " + rssi + "\n");
                         }
                     });
                 }
             };
     public void start(View view) {
         Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
-        TextView text=(TextView)findViewById(R.id.text);
-        text.setText("Scanning");
-        Button btn=(Button)findViewById(R.id.start);
-        btn.setText("Rescan");
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
 
