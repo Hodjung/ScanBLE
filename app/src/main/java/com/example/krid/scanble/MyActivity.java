@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +16,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 
@@ -31,6 +39,7 @@ public class MyActivity extends ActionBarActivity {
                         public void run() {
                             TextView text=(TextView)findViewById(R.id.text);
                             text.setText("Scanning\n"+device.getName() + " rssi = " + rssi + "\n");
+                            write("BLE",device.getName()+":"+rssi+"\n");
                         }
                     });
                 }
@@ -46,7 +55,19 @@ public class MyActivity extends ActionBarActivity {
         text.setText("Stop");
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
     }
-
+    public void write(String fname,String content){
+        String path="/sdcard/"+fname+".txt";
+        File file=new File(path);
+        try {
+            file.createNewFile();
+            FileWriter fw= new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw=new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +79,8 @@ public class MyActivity extends ActionBarActivity {
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
+        write("BLE","TEST\n");
+        Toast.makeText(this,"BLE Writed",Toast.LENGTH_SHORT);
     }
 
 
