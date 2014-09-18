@@ -39,7 +39,7 @@ public class MyActivity extends ActionBarActivity {
                         public void run() {
                             TextView text=(TextView)findViewById(R.id.text);
                             text.setText("Scanning\n"+device.getName() + " rssi = " + rssi + "\n");
-                            write("BLE",device.getName()+":"+rssi+"\n");
+                            write("BLE","\n"+device.getName()+":"+rssi);
                         }
                     });
                 }
@@ -58,9 +58,15 @@ public class MyActivity extends ActionBarActivity {
     public void write(String fname,String content){
         String path="/sdcard/"+fname+".txt";
         File file=new File(path);
+        if (!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         try {
-            file.createNewFile();
-            FileWriter fw= new FileWriter(file.getAbsoluteFile());
+            FileWriter fw= new FileWriter(file.getAbsoluteFile(),true);
             BufferedWriter bw=new BufferedWriter(fw);
             bw.write(content);
             bw.close();
@@ -79,7 +85,6 @@ public class MyActivity extends ActionBarActivity {
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
-        write("BLE","TEST\n");
         Toast.makeText(this,"BLE Writed",Toast.LENGTH_SHORT);
     }
 
