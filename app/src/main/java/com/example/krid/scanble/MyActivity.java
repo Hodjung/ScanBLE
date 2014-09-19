@@ -1,5 +1,5 @@
 package com.example.krid.scanble;
-
+/*test merge*/
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
