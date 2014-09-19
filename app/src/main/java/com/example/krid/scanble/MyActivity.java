@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +16,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 
@@ -30,17 +38,14 @@ public class MyActivity extends ActionBarActivity {
                         @Override
                         public void run() {
                             TextView text=(TextView)findViewById(R.id.text);
-                            text.setText("Start Scan\n"+device.getName() + " rssi = " + rssi + "\n");
+                            text.setText("Scanning\n"+device.getName() + " rssi = " + rssi + "\n");
+                            write("BLE","\n"+device.getName()+":"+rssi);
                         }
                     });
                 }
             };
     public void start(View view) {
         Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
-        TextView text=(TextView)findViewById(R.id.text);
-        text.setText("Scanning");
-        Button btn=(Button)findViewById(R.id.start);
-        btn.setText("Rescan");
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
 
@@ -50,7 +55,25 @@ public class MyActivity extends ActionBarActivity {
         text.setText("Stop");
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
     }
-
+    public void write(String fname,String content){
+        String path="/sdcard/"+fname+".txt";
+        File file=new File(path);
+        if (!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            FileWriter fw= new FileWriter(file.getAbsoluteFile(),true);
+            BufferedWriter bw=new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +85,7 @@ public class MyActivity extends ActionBarActivity {
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
+        Toast.makeText(this,"BLE Writed",Toast.LENGTH_SHORT);
     }
 
 
