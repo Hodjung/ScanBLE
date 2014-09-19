@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,15 +18,13 @@ import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 
 public class MyActivity extends ActionBarActivity {
-
+    private int count;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
@@ -37,19 +34,28 @@ public class MyActivity extends ActionBarActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            TextView text=(TextView)findViewById(R.id.text);
-                            text.setText("Scanning\n"+device.getName() + " rssi = " + rssi + "\n");
-                            write("BLE","\n"+device.getName()+":"+rssi);
+                            if (device.getName().equals("HMSoft")){
+                                TextView text = (TextView) findViewById(R.id.text);
+                                text.setText("Scanning\n" + device.getName() + " rssi = " + rssi + "\n");
+                                TextView range = (TextView) findViewById(R.id.editText);
+                                write("BLE" + range.getText().toString(), "\n" + device.getName() + ":" + rssi +
+                                        " count=" + count);
+                                count++;
+                                if (count == 100) {
+                                    Button btn = (Button) findViewById(R.id.stop);
+                                    btn.callOnClick();
+                                }
+                            }
                         }
                     });
                 }
             };
     public void start(View view) {
         Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
+        count=0;
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
-
-    public void stop (View view){
+        public void stop (View view){
         Toast.makeText(this,"STOP",Toast.LENGTH_SHORT).show();
         TextView text=(TextView)findViewById(R.id.text);
         text.setText("Stop");

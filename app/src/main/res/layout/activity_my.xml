@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/text"
-        android:text="@string/hello_world"
+        android:text="Hello World"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
@@ -33,5 +33,22 @@
         android:layout_alignParentRight="true"
         android:layout_width="100dp"
         android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:id="@+id/editText"
+        android:text="1"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:id="@+id/showtime"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>
