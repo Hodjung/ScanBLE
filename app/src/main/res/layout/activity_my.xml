@@ -34,21 +34,65 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:id="@+id/editText"
-        android:text="1"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
+    <RadioGroup
+        android:id="@+id/distance_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00"
-        android:id="@+id/showtime"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 m"
+            android:checked="true"
+            android:id="@+id/distance1"
+            android:layout_below="@+id/text"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 m"
+            android:id="@+id/distance2"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3 m"
+            android:id="@+id/distance3"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4 m"
+            android:id="@+id/distance4"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 m"
+            android:id="@+id/distance5"
+            android:layout_below="@+id/distance4"
+            android:layout_centerHorizontal="true"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6 m"
+            android:id="@+id/distance6"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7 m"
+            android:id="@+id/distance7"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8 m"
+            android:id="@+id/distance8"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9 m"
+            android:id="@+id/distance9"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 m"
+            android:id="@+id/distance10"/>
+        </RadioGroup>
 </RelativeLayout>

@@ -11,8 +11,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,8 @@ import java.io.IOException;
 
 public class MyActivity extends ActionBarActivity {
     private int count;
+    private String filename;
+    private RadioGroup radioGroup;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
@@ -36,12 +41,12 @@ public class MyActivity extends ActionBarActivity {
                         public void run() {
                             if (device.getName().equals("HMSoft")){
                                 TextView text = (TextView) findViewById(R.id.text);
-                                text.setText("Scanning\n" + device.getName() + " rssi = " + rssi + "\n");
-                                TextView range = (TextView) findViewById(R.id.editText);
-                                write("BLE" + range.getText().toString(), "\n" + device.getName() + ":" + rssi +
+                                text.setText("Scanning\n" + device.getName() + " rssi = " + rssi + z"\n");
+                                /*TextView range = (TextView) findViewById(R.id.editText);*/
+                                write(filename, "\n" + device.getName() + ":" + rssi +
                                         " count=" + count);
                                 count++;
-                                if (count == 100) {
+                                if (count == 101) {
                                     Button btn = (Button) findViewById(R.id.stop);
                                     btn.callOnClick();
                                 }
@@ -52,14 +57,19 @@ public class MyActivity extends ActionBarActivity {
             };
     public void start(View view) {
         Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
-        count=0;
+        RadioButton range=(RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+        filename="BLE "+range.getText().toString();
+        write(filename,"Log:");
+        count=1;
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
-        public void stop (View view){
+    public void stop (View view){
         Toast.makeText(this,"STOP",Toast.LENGTH_SHORT).show();
         TextView text=(TextView)findViewById(R.id.text);
         text.setText("Stop");
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
+        view.playSoundEffect(0);
+
     }
     public void write(String fname,String content){
         String path="/sdcard/"+fname+".txt";
@@ -71,8 +81,11 @@ public class MyActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
         }
+        boolean new_file=true;
+        if (content.equals("Log:"))
+            new_file=false;
         try {
-            FileWriter fw= new FileWriter(file.getAbsoluteFile(),true);
+            FileWriter fw= new FileWriter(file.getAbsoluteFile(),new_file);
             BufferedWriter bw=new BufferedWriter(fw);
             bw.write(content);
             bw.close();
@@ -84,6 +97,7 @@ public class MyActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+        radioGroup=(RadioGroup)findViewById(R.id.distance_group);
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, "BLE NOT SUPPORT", Toast.LENGTH_SHORT).show();
             finish();
@@ -91,7 +105,6 @@ public class MyActivity extends ActionBarActivity {
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
-        Toast.makeText(this,"BLE Writed",Toast.LENGTH_SHORT);
     }
 
 
